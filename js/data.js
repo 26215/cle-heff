@@ -9,6 +9,12 @@ export const prof = [
         "name": "David Wilson"
     },    {
         "name": "Eva Brown"
+    },
+     {
+        "name": "Emmanuel Lemal"
+    },
+     {
+        "name": "Alex Xiao"
     }
 ]
 
