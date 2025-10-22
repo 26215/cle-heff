@@ -13,17 +13,18 @@ document.addEventListener("DOMContentLoaded", () => {
     roomName.textContent = local.name;
 
     const containerDiv = document.createElement("div");
-    containerDiv.className = "autocomplete-container relative w-2/3 mx-3 overflow-visible";
+    containerDiv.className =
+      "autocomplete-container relative w-2/3 mx-3 overflow-visible";
     containerDiv.id = local.name.replace(/\s+/g, "-");
 
     const input = document.createElement("input");
     input.className =
-      "prof-input w-full p-2 mb-2 lg:mb-0 text-white rounded outline-none border border-gray-600 bg-gray-700 z-50 relative";
+      "prof-input w-full p-2 mb-2 lg:mb-0 text-white rounded outline-none border border-gray-600 bg-gray-700";
     input.placeholder = "Nom du prof";
 
     const list = document.createElement("div");
     list.className =
-      "autocomplete-list absolute top-full left-0 right-0 bg-gray-800 z-999";
+      "autocomplete-list absolute top-full left-0 right-0 bg-gray-800";
     list.dataset.room = local.name.replace(/\s+/g, "-");
 
     containerDiv.appendChild(input);
@@ -46,8 +47,11 @@ function autocompleteProf() {
 
       if (!value) {
         listEl.classList.add("hidden");
+        input.parentElement.style.zIndex = ""; // 👈 Reset z-index
         return;
       }
+
+      input.parentElement.style.zIndex = "1000"; // 👈 Élève le conteneur
 
       const suggestions = prof
         .filter((p) => p.name.toLowerCase().includes(value))
@@ -55,7 +59,7 @@ function autocompleteProf() {
 
       if (suggestions.length === 0) {
         const noResult = document.createElement("div");
-        noResult.className = "autocomplete-suggestion p-2 text-gray-400 z-80";
+        noResult.className = "autocomplete-suggestion p-2 text-gray-400";
         noResult.textContent = "No results found";
         listEl.appendChild(noResult);
         listEl.classList.remove("hidden");
@@ -70,6 +74,7 @@ function autocompleteProf() {
         option.addEventListener("click", () => {
           input.value = name;
           listEl.classList.add("hidden");
+          input.parentElement.style.zIndex = ""; // 👈 Reset z-index
         });
         listEl.appendChild(option);
       });
@@ -78,22 +83,14 @@ function autocompleteProf() {
     });
 
     input.addEventListener("blur", () => {
+      setTimeout(() => {
+        listEl.classList.add("hidden");
+        input.parentElement.style.zIndex = ""; // 👈 Reset z-index
+      }, 200);
+    });
+
+    input.addEventListener("blur", () => {
       setTimeout(() => listEl.classList.add("hidden"), 200);
     });
-  });
-
-  gsap.registerPlugin(ScrollTrigger);
-  gsap.from(".room", {
-    duration: 1,
-    y: 50,
-    x: 20,
-    opacity: 0,
-    force3D: false, // ✅ empêche la création d'un nouveau stacking context
-    transformPerspective: 0, // facultatif, neutralise le contexte 3D
-    stagger: 0.2,
-    scrollTrigger: {
-      trigger: ".grid",
-      start: "top 80%",
-    },
   });
 }
