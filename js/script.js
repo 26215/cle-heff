@@ -43,6 +43,7 @@ function autocompleteProf() {
 
     input.addEventListener("input", (e) => {
       const value = e.target.value.toLowerCase();
+
       listEl.innerHTML = "";
 
       if (!value) {
@@ -53,9 +54,13 @@ function autocompleteProf() {
 
       input.parentElement.style.zIndex = "1000"; // 👈 Élève le conteneur
 
-      const suggestions = prof
+      let suggestions = [];
+
+      if (value.length >= 2) {
+       suggestions = prof
         .filter((p) => p.name.toLowerCase().includes(value))
         .slice(0, 5);
+      
 
       if (suggestions.length === 0) {
         const noResult = document.createElement("div");
@@ -78,7 +83,7 @@ function autocompleteProf() {
         });
         listEl.appendChild(option);
       });
-
+}
       listEl.classList.remove("hidden");
     });
 
