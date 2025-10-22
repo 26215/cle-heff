@@ -57,9 +57,12 @@ function autocompleteProf() {
       let suggestions = [];
 
       if (value.length >= 2) {
-       suggestions = prof
-        .filter((p) => p.name.toLowerCase().includes(value))
-        .slice(0, 5);
+   const suggestions = prof
+  .filter((p) => {
+    const words = p.name.toLowerCase().split(' ');
+    return words.some(word => word.startsWith(value));
+  })
+  .slice(0, 5);
       
 
       if (suggestions.length === 0) {
