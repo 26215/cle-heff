@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+.floor-1 {
+  @apply bg-blue-600;
+}
+
+.floor-2 {
+  @apply bg-green-600;
+}
+
